@@ -43,10 +43,20 @@
 
 .navbar {
   height: 100vh;
-  position: fixed;
+  position: static;
+}
+
+.nav-bar{
 }
 
 .main-content {
   margin-left: 25%;
   padding: 20px;
 }
+
+.Row-Container{
+  display: flex;
+  
+}
+
+
