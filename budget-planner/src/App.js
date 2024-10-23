@@ -23,6 +23,9 @@ function App() {
                 <Route path="/income" element={<Income />} />
 
               </Routes>
+              <footer>
+                <p className='copy-right'> Powered by SeoVision Digital </p>
+              </footer>
             </div>
             
           </div>
