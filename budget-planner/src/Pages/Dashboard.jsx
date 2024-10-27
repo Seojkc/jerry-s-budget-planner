@@ -12,9 +12,21 @@ import Paper from '@mui/material/Paper';
 import { format } from 'date-fns';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Popup from '../Components/NewExpense.jsx';
 
 
 function Dashboard() {
+
+    const [showPopup, setshowPopup] = useState(false);
+
+    const togglePopup = ()=>
+    {
+        if(showPopup){
+            console.log("poda koppee")
+            getExpenseList();
+        }
+        setshowPopup(!showPopup);
+    }
 
     function createExpenses(amount, budgetID, category, description, expenseDate, expenseID, userID) {
         
@@ -35,32 +47,32 @@ function Dashboard() {
     //functions and variables
     const [expenses, setExpenses] = useState([]);
 
-    useEffect(() => {
-        let isMounted = true; 
-        
+    const getExpenseList = () => {
         axios.get('http://localhost:5000/api/expenses')
             .then(response => {
-                if (isMounted) { 
-                    response.data.forEach(
-                        thisExpenseData =>
-                            setExpenses(prevData => [...prevData, createExpenses(
-                                thisExpenseData.amount,
-                                thisExpenseData.budgetID,
-                                thisExpenseData.category,
-                                thisExpenseData.description,
-                                thisExpenseData.expenseDate,
-                                thisExpenseData.expenseID,
-                                thisExpenseData.userID
-                            )])
-                    );
-                }
+                const processedExpenses = response.data.map(thisExpenseData => 
+                    createExpenses(
+                        thisExpenseData.amount,
+                        thisExpenseData.budgetID,
+                        thisExpenseData.category,
+                        thisExpenseData.description,
+                        thisExpenseData.expenseDate,
+                        thisExpenseData.expenseID,
+                        thisExpenseData.userID
+                    )
+                );
+                setExpenses(processedExpenses); // Replace entire expenses list
             })
             .catch(error => {
                 console.error("There was an error fetching the expenses!", error);
             });
-    
-        return () => { isMounted = false; };
+    };
+
+    // Load the expenses once when the component mounts
+    useEffect(() => {
+        getExpenseList();
     }, []);
+
     
 
 
@@ -71,10 +83,13 @@ function Dashboard() {
 
     //page setup
     return (
-        <div className="Container">
+        <div className={showPopup?'Container blur-background':'Container '} >
             <h1 className='welcome-tag'>Welcome to Dashboard,</h1>
             <div className='button-expense-container'>
-                <Button variant="contained" className='new-expense-button'>New Expense</Button>
+                <Button onClick={togglePopup} variant="contained" className='new-expense-button'>New Expense</Button>
+                
+                <Popup show={showPopup} handleClose={togglePopup}>
+                </Popup>
             </div>
 
 
