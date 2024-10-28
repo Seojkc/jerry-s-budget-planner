@@ -123,21 +123,54 @@ const Popup = ({ handleClose, show, children}) =>{
         setFormData(initialFormData) 
     }
 
-    const handleSubmit = (e)=>{
-        
-        Object.entries(formData).map(([key,value])=>console.log(key," : ",value))
+    const [errors,setErrors]=useState(
+        {
+            category:false,
+            amount:false,
+            expenseDate:false,
+            description:false
 
-        e.preventDefault();
-        axios
-            .post('http://localhost:5000/api/expenses',formData)
-            .then((response)=>{
-                console.log("Expense Added : ",response.data)
-                resetData();
-                handleClose();
-            })
-            .catch((error)=>{
-                console.log("Error catched")
-            })
+        }
+    )
+
+    
+
+    const handleSubmit = (e)=>{
+
+        const checkErrors = {
+            category:formData.category.trim()==='',
+            amount:formData.amount<=0,
+            expenseDate:formData.expenseDate===null,
+            description:false
+        }
+
+
+        setErrors(checkErrors);
+
+        let validated=true;
+        Object.entries(checkErrors).forEach((entry)=>{
+            const [key,value]=entry;
+            if(value){
+                validated=false;
+            }
+            
+        })
+        
+        if(validated){
+            e.preventDefault();
+            axios
+                .post('http://localhost:5000/api/expenses',formData)
+                .then((response)=>{
+                    console.log("Expense Added : ",response.data)
+    
+                    resetData();
+                    handleClose();
+                })
+                .catch((error)=>{
+                    console.log("Error catched")
+                })
+        }
+        
     }
 
 
@@ -156,11 +189,12 @@ const Popup = ({ handleClose, show, children}) =>{
                     </IconButton>
                 </div> */}
                 <div className="text-field-box">
-                    <TextField  name="category" onChange={setNewExpenseData} value={formData.category}  className="text-field" id="filled-basic" label=" Category" variant="standard"/>
+                    <TextField error={errors.category} helperText={errors.category?"Field Required":""} name="category" onChange={setNewExpenseData} value={formData.category}  className="text-field" id="filled-basic" label=" Category" variant="standard"/>
                     <div className="white-space"></div>
-                    <TextField name="amount" value={formData.amount} onChange={setNewExpenseData} type="number" className="text-field" label="Amount" variant="standard"/>
+                    <TextField  error={errors.amount} helperText={errors.amount?"Field Required":""}  name="amount" inputProps={{ min: 0 }} value={formData.amount} onChange={setNewExpenseData} type="number" className="text-field" label="Amount" variant="standard"/>
                     <div className="white-space"></div>
                     <DatePicker name="expenseDate" 
+                        error={errors.expenseDate} helperText={errors.expenseDate?"Field Required":""} 
                         onChange={(date) => setFormData(prevData => ({
                             ...prevData,
                             expenseDate: date 
@@ -174,8 +208,6 @@ const Popup = ({ handleClose, show, children}) =>{
                     <Button variant="contained" onClick={handleSubmit} className="submit-button">Submit</Button>
                     <Button  onClick={handleClose} variant="contained" className="cancel-button">Cancel</Button>
                 </div>
-            
-
             </section>
 
         </div>
