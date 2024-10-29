@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './StyleSheets/MyNavBar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome component
 import { faHome, faDollarSign, faCog, faFileChartColumn } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
+import MissMinuteRight from './ExternalFiles/Miss_Minutes_29.png'
 
 
 const MyNavbar = () => {
@@ -30,6 +31,9 @@ const MyNavbar = () => {
           </Link>
         </div>
         
+        <div >
+          <img src={MissMinuteRight} className='miss-minute-right'/>
+        </div>
       </Nav>
     </Navbar>
   );
