@@ -99,3 +99,51 @@
     color:gray;
     text-align: left;
 }
+
+
+
+
+
+
+
+
+/*Submit File css*/
+
+.submit-container{
+    z-index:20000;
+    background-color: white;    
+    width: 550px;
+    height: 300px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.75);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    justify-content: center;
+}
+
+.submit-container.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.submit-container.hide {
+    opacity: 0;
+    transform: scale(0.75);
+}
+
+.submit-container img {
+    width:300px;
+    
+}
+
+
+.submit-container h1 {
+    color:rgba(0, 0, 0, 0.459);
+}
+
+.display-none{
+    display: none;
+}

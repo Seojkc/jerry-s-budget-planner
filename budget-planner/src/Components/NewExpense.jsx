@@ -10,7 +10,7 @@ import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAuto
 import { styled } from '@mui/system';
 import { DatePicker, Space } from 'antd';
 import { format } from 'date-fns'; // Import the format function
-
+import  Submit from './Submit'
 
 
 const Popup = ({ handleClose, show, children}) =>{
@@ -133,7 +133,7 @@ const Popup = ({ handleClose, show, children}) =>{
         }
     )
 
-    
+    const [submitScreen, setSubmitScreen] = useState(false);
 
     const handleSubmit = (e)=>{
 
@@ -163,8 +163,13 @@ const Popup = ({ handleClose, show, children}) =>{
                 .then((response)=>{
                     console.log("Expense Added : ",response.data)
     
-                    resetData();
-                    handleClose();
+                    setSubmitScreen(true)
+                    setTimeout(() => {
+                        setSubmitScreen(false);
+                        resetData();
+                        handleClose();
+                    }, 2000);
+                    
                 })
                 .catch((error)=>{
                     console.log("Error catched")
@@ -181,6 +186,9 @@ const Popup = ({ handleClose, show, children}) =>{
 
     return(
         <div  onClick={handleClickOutside} className={showHideClassName}>
+
+            {submitScreen && <Submit show={submitScreen}></Submit>}
+
             <section className="popup-main">
                 <h1>Add Expense</h1>
                 {/* <div className="IconButton-close">
