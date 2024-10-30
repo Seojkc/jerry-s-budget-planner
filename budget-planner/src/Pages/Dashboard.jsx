@@ -22,7 +22,6 @@ function Dashboard() {
     const togglePopup = ()=>
     {
         if(showPopup){
-            console.log("poda koppee")
             getExpenseList();
         }
         setshowPopup(!showPopup);
