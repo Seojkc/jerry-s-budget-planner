@@ -209,7 +209,7 @@ const Popup = ({ handleClose, show, children}) =>{
                         }))}  
                     value={formData.expenseDate} dateFormat="yyyy-MM-dd" className="text-field"/>
                     <div className="white-space"></div>
-                    <TextField multiline rows={4} label="Description" name="description" onChange={setNewExpenseData} value={formData.description}  className="text-field"  minRows={5} maxRows={6} variant="standard"/>
+                    <TextField multiline rows={4} label="Description" name="description" onChange={setNewExpenseData} value={formData.description}  className="text-field" variant="standard"/>
                 </div>
 
                 <div className="button-area">

@@ -1,0 +1,132 @@
+.threeDot-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 30px;
+}
+
+
+.oneDot-container{
+    width: 400px;
+    height:250px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    flex: 1;
+}
+.green-shadow{
+    background: linear-gradient(to top,rgba(0, 255, 42, 0.425),rgb(255, 255, 255));
+}
+.red-shadow{
+    background: linear-gradient(to top,rgba(255, 0, 0, 0.425),rgb(255, 255, 255));
+}
+.yellow-shadow{
+    background: linear-gradient(to top,rgba(255, 230, 0, 0.425),rgb(255, 255, 255));
+}
+
+.oneDot-container h2{
+    font-family: 'Courier New', monospace;
+    color: rgb(145, 145, 145);
+    margin-top: 60px;
+    margin-left: 30px;
+    text-align: left;
+    font-weight: 50;
+}
+.oneDot-container h1{
+    color: rgb(71, 71, 71);
+    margin-top: 40px;
+    font-size: 50px;
+    text-align: center;
+    font-weight: 400;
+}
+.progress-container {
+    width: 80%;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* The Bar Background */
+  .bar {
+    position: relative;
+    height: 40px;
+    background: #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 15px;
+  }
+  
+  /* Expense Progress */
+  .progress-expense {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(to right,rgb(203, 255, 187),rgb(5, 161, 0));
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    text-align: right;
+    padding-right: 5px;
+    box-sizing: border-box;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  /* Target Progress */
+  .progress-target {
+    position: absolute;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(to right,rgb(250, 250, 250),rgb(214, 1, 1)); 
+    text-align: right;
+    padding-right: 5px;
+    box-sizing: border-box;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  }
+  
+  /* Tip Labels */
+  .label {
+    position: absolute;
+    top: 25%;
+    right:30px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.767);
+    font-size: 20px;
+    font-weight: 300;
+  }
+  
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    color: rgb(90, 90, 90);
+  }
+  
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+    
+  }
+  
+  .legend-color.expense {
+    background: #ff6262; /* Matches expense color */
+  }
+  
+  .legend-color.target {
+    background: #86eb8a; /* Matches target color */
+  }

@@ -32,3 +32,21 @@
     font-size: 18px !important;
 }
 
+.table-body{
+    height: 600px;
+    max-height: 600px !important;
+    
+}
+.tableHeader{
+    position: sticky;
+    top: 0; /* Position the header at the top of the scrolling area */
+    background-color: white; /* Set a background color for the sticky header */
+    z-index: 1;
+}
+.expense-id-table-row{
+    width: 80px;
+    max-width: 80px;
+}
+.expense-date-table-row{
+    width:200px
+}

@@ -21,7 +21,7 @@ const MyNavbar = () => {
             <FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '22px', marginRight: '10px', marginBottom: '2px' }} /> 
             Income
           </Link>
-          <Link to="/Report" className="nav-link">
+          <Link to="/report" className="nav-link">
             <FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '22px', marginRight: '10px', marginBottom: '2px' }} /> 
             Report
           </Link>

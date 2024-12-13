@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   width: 100%;
+  height: 100% !important;
 
 }
 
@@ -54,14 +55,16 @@
 
 .Row-Container{
   display: flex;
-  
+  height: 100% !important;
 }
 
 
 .main-page{
   width:100%;
   padding: 30px;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(250, 250, 250);
+  height: 100% !important;
+
 }
 
 .copy-right{
