@@ -4,6 +4,7 @@ import MyNavbar from './MyNavBar';
 import Dashboard from './Pages/Dashboard';
 import Income from './Pages/Income';
 import Report from './Pages/Report'
+import Customise from './Pages/Customise';
 import React from 'react';
 import { Container,Row, Col } from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -18,11 +19,12 @@ function App() {
               <MyNavbar/>
             </div>
             <div className='main-page'>
-              <Routes>
+              <Routes className="Routes-main-content">
                 <Route path="/" element={<Navigate to="/dashboard" />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/income" element={<Income />} />
                 <Route path="/report" element={<Report />} />
+                <Route path="/Customise" element={<Customise />} />
 
               </Routes>
               <footer>

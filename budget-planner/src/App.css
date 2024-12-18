@@ -71,3 +71,10 @@
   color: rgba(0, 0, 0, 0.301);
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+.Routes-main-content{
+  margin-bottom: 10px;
+}
+
+footer{
+  margin-top: 10px;
+}

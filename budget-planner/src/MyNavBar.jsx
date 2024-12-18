@@ -14,20 +14,19 @@ const MyNavbar = () => {
       <Nav className="flexRow">
         <div className="flexRowChild">
           <Link to="/dashboard" className="nav-link">
-            <FontAwesomeIcon icon={faHome} style={{ fontSize: '22px', marginRight: '10px', marginBottom: '2px' }} /> 
             Dashboard
           </Link>          
           <Link to="/income" className="nav-link">
-            <FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '22px', marginRight: '10px', marginBottom: '2px' }} /> 
             Income
           </Link>
           <Link to="/report" className="nav-link">
-            <FontAwesomeIcon icon={faDollarSign} style={{ fontSize: '22px', marginRight: '10px', marginBottom: '2px' }} /> 
             Report
           </Link>
           <Link to="/income" className="nav-link">
-            <FontAwesomeIcon icon={faCog} style={{ fontSize: '22px', marginRight: '10px', marginBottom: '2px' }} /> 
             Bills
+          </Link>
+          <Link to="/Customise" className="nav-link">
+            Customise
           </Link>
         </div>
         

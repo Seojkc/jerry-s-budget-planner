@@ -20,11 +20,12 @@ import ThreeDot from '../Components/ThreeDotExpense.jsx'
 function Dashboard() {
 
     const [showPopup, setshowPopup] = useState(false);
-
+    const [refresh,setRefresh]=useState(false);
     const togglePopup = ()=>
     {
         if(showPopup){
             getExpenseList();
+            refreshThreeDot();
         }
         setshowPopup(!showPopup);
     }
@@ -77,6 +78,7 @@ function Dashboard() {
         .then(response => {
             console.log("Expense deleted successfully:", response);
             getExpenseList(); // Refresh the list after deletion
+            refreshThreeDot();
         })
         .catch(error => {
             console.error("There was an error deleting the expense!", error);
@@ -88,13 +90,17 @@ function Dashboard() {
         getExpenseList();
     }, []);
 
-    expenses.length > 0 && console.log("thisw : ", expenses);
+    function refreshThreeDot(){
+        setRefresh((prev)=>!prev)
+    }
 
+    expenses.length > 0 && console.log("thisw : ", expenses);
+ 
     //page setup
     return (
         <div className={showPopup?'Container blur-background':'Container '} >
             <h1 className='welcome-tag'>Welcome to Dashboard,</h1>
-            <ThreeDot></ThreeDot>
+            <ThreeDot refresh={refresh}></ThreeDot>
             <div className='button-expense-container'>
                 <Button onClick={togglePopup} variant="contained" className='new-expense-button'>New Expense</Button>
                 

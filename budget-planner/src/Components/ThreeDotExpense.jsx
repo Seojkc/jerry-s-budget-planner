@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../StyleSheets/ThreeDotExpense.css';
-
+import axios from 'axios';
 
 const ProgressBar = ({ monthlyExpense, monthlyTarget }) => {
     // Calculate percentages
@@ -26,10 +26,10 @@ const ProgressBar = ({ monthlyExpense, monthlyTarget }) => {
         </div>
         <div className="legend">
           <div className="legend-item">
-            <span className="legend-color expense"></span> Monthly Target (${monthlyExpense.toLocaleString()})
+            <span className="legend-color target"></span> Monthly Target (${monthlyExpense.toLocaleString()})
           </div>
           <div className="legend-item">
-            <span className="legend-color target"></span> Monthly Expense
+            <span className="legend-color expense "></span> Monthly Expense
           </div>
         </div>
       </div>
@@ -44,8 +44,25 @@ function SubmitExpenses({refresh}) {
     const[tarExpense,setTarExpense] = useState(0);
     const[monthlyTarExpense,setMonthlyTarExpense] = useState(300);
     const[currentMonthlyExpense,setCurrentMonthlyExpense]=useState(150);
+    const[currentYr,setCurrentYr]=useState(0);
 
 
+    const getThreeDotDetails = ()=>{
+        axios.get('http://localhost:5000/api/ThreeDot')
+        .then(response =>{
+            console.log(response.data);
+            setTotIncome(response.data.totIncome)
+            setTotExpense(response.data.totExpense)
+            setTarExpense(response.data.tarExpense)
+            setMonthlyTarExpense(response.data.monthlyTarExpense)
+            setCurrentMonthlyExpense(response.data.currentMonthlyExpense)
+            setCurrentYr(response.data.Yr)
+        })
+    }
+
+    useEffect(()=>{
+        getThreeDotDetails();
+    },[refresh]);
     
 
     return (
@@ -64,8 +81,8 @@ function SubmitExpenses({refresh}) {
                 </div>
 
                 <div className='oneDot-container yellow-shadow'>
-                    <h2>Targeted Expense</h2>
-                    <h1>${new Intl.NumberFormat('en-US').format(tarExpense)}</h1>
+                    <h2>Targeted Expense/Yr</h2>
+                    <h1>${new Intl.NumberFormat('en-US').format(monthlyTarExpense*12)}</h1>
                 </div>
             </div>
 
