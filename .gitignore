@@ -1,1 +1,14 @@
 node_modules
+
+# React (Client)
+Client/node_modules/
+Client/build/
+
+# ASP.NET (Server)
+Server/bin/
+Server/obj/
+Server/.vs/
+
+# General
+*.log
+.DS_Store
