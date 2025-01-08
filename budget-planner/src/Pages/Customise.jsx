@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import '../StyleSheets/customise.css';
 import Button from '@mui/material/Button';
 import axios from 'axios';
-
+import Submit from '../Components/Submit'
 function Customise() {
 
     
@@ -38,11 +38,33 @@ function Customise() {
             setBlnTarMonExp(false);
         }
 
-        
+        if(check){
+            updateUsrDetails();
+        }
 
     }
 
+    const updateUsrDetails =()=>
+    {
+        var data={
+            id                   : 300,
+            totIncome             :totIncome,
+            totExpense            :0,
+            tarExpense            :tarMonExp,
+            monthlyTarExpense     :tarMonExp,
+            currentMonthlyExpense :0,
+            YrUserDetail          :YrToUpdate
+    }
+        axios.post('http://localhost:5000/api/ThreeDot', data)
+        .then(response => {
+            console.log('Saved successfully:', response.data);
 
+        })
+        .catch(error => {
+            console.error('Error saving data:', error);
+        });
+
+    }
 
     const getThreeDotDetails = ()=>{
         axios.get('http://localhost:5000/api/ThreeDot')
@@ -51,6 +73,17 @@ function Customise() {
             setTotIncome(response.data.totIncome)
             setTarMonExp(response.data.monthlyTarExpense);
         })
+    }
+
+    const getThisThreeDotDetails=(year)=>{
+        console.log(year)
+        axios.get(`http://localhost:5000/api/ThreeDot/${year}`)
+        .then(response =>{
+            console.log(response.data);
+            setTotIncome(response.data.totIncome)
+            setTarMonExp(response.data.monthlyTarExpense);
+        })
+
     }
 
     useEffect(()=>{
@@ -68,6 +101,7 @@ function Customise() {
     const setYrToUpdateChange = (event) => {
         // Get the value from the event
         setYrToUpdate(event.target.value); // Update totIncome state on change
+        getThisThreeDotDetails(event.target.value);
     };
 
 

@@ -161,7 +161,6 @@ const Popup = ({ handleClose, show, children}) =>{
             axios
                 .post('http://localhost:5000/api/expenses',formData)
                 .then((response)=>{
-                    console.log("Expense Added : ",response.data)
     
                     setSubmitScreen(true)
                     setTimeout(() => {

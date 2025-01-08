@@ -50,7 +50,6 @@ function SubmitExpenses({refresh}) {
     const getThreeDotDetails = ()=>{
         axios.get('http://localhost:5000/api/ThreeDot')
         .then(response =>{
-            console.log(response.data);
             setTotIncome(response.data.totIncome)
             setTotExpense(response.data.totExpense)
             setTarExpense(response.data.tarExpense)

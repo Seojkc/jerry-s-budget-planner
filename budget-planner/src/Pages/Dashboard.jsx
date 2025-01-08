@@ -2,20 +2,21 @@ import '../StyleSheets/DashBoard.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Popup from '../Components/NewExpense.jsx';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import ThreeDot from '../Components/ThreeDotExpense.jsx';
+import ProgressMonthlyLineBar from '../Components/ProgressLineBarChart.jsx';
 import { format } from 'date-fns';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Popup from '../Components/NewExpense.jsx';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ThreeDot from '../Components/ThreeDotExpense.jsx'
 
 function Dashboard() {
 
@@ -32,8 +33,7 @@ function Dashboard() {
 
     function createExpenses(amount, budgetID, category, description, expenseDate, expenseID, userID) {
         
-        console.log(category)
-        console.log("koppaaan")
+       
         expenseDate = format(new Date(expenseDate), 'dd MMMM, yyyy');
 
         return {
@@ -101,6 +101,7 @@ function Dashboard() {
         <div className={showPopup?'Container blur-background':'Container '} >
             <h1 className='welcome-tag'>Welcome to Dashboard,</h1>
             <ThreeDot refresh={refresh}></ThreeDot>
+            <ProgressMonthlyLineBar XAxisData={10} YAxisData={12}></ProgressMonthlyLineBar>
             <div className='button-expense-container'>
                 <Button onClick={togglePopup} variant="contained" className='new-expense-button'>New Expense</Button>
                 
