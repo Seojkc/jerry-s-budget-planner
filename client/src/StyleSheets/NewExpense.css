@@ -1,0 +1,149 @@
+/* .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 600px;
+    background-color: rgb(250, 250, 250);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-50%, -50%); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    border-radius: 8px; 
+
+} */
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.24); /* Transparent dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    z-index: 999; /* Ensures the popup is on top of the blurred content */
+  }
+  
+  /* Popup content styles */
+  .popup-main {
+    background: linear-gradient(to top,rgb(252, 231, 231),rgb(255, 255, 255));
+    width: 500px;
+    height: 600px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensure it's above the overlay */
+  }
+
+.display-block{
+    display: block;
+}
+
+.display-none{
+    display: none;
+}
+
+
+.CloseIcon{
+    color: red;
+    font-size: 40px !important;
+}
+
+.IconButton-close
+{
+    display: flex;
+    justify-content: end;
+}
+
+.text-field{
+    width: 100%;
+    background-color: rgba(241, 246, 252, 0);
+    border-bottom: 0px solid rgb(255, 255, 255);
+    
+}
+
+.text-field-box{
+    padding: 0px 20px;
+}
+
+.white-space
+{
+    height:50px;
+}
+
+.button-area{
+    margin-top: 50px;
+    padding-right: 20px;
+}
+
+.submit-button{
+    margin-right: 50px !important;
+    background-color: rgb(82, 151, 255) !important;
+    width: 150px;
+    height: 50px;
+    font-size: 20px !important;
+}
+
+.cancel-button{
+    background-color: rgb(255, 82, 82) !important;
+    width: 150px;
+    height: 50px;
+    font-size: 20px !important;
+}
+
+.text-field-box p{
+    color:gray;
+    text-align: left;
+}
+
+
+
+
+
+
+
+
+/*Submit File css*/
+
+.submit-container{
+    z-index:20000;
+    background-color: white;    
+    width: 550px;
+    height: 300px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.75);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    justify-content: center;
+}
+
+.submit-container.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.submit-container.hide {
+    opacity: 0;
+    transform: scale(0.75);
+}
+
+.submit-container img {
+    width:300px;
+    
+}
+
+
+.submit-container h1 {
+    color:rgba(0, 0, 0, 0.459);
+}
+
+.display-none{
+    display: none;
+}
