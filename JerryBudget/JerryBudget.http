@@ -1,0 +1,6 @@
+@JerryBudget_HostAddress = http://localhost:5253
+
+GET {{JerryBudget_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
