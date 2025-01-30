@@ -1,13 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useRef } from 'react';
+import { useEffect,useState } from 'react';
 import '../StyleSheets/ThreeDotExpense.css';
 import axios from 'axios';
+
+import { LineChart } from '@mui/x-charts/LineChart';
+
+
+
+const LineChartComponent = () => {
+  
+
+
+  return (
+    <div style={{ width: "600px", margin: "0 auto" }}>
+    
+    </div>
+  );
+};
+
 
 const ProgressBar = ({ monthlyExpense, monthlyTarget }) => {
     // Calculate percentages
     const maxExpense = Math.max(monthlyExpense, monthlyTarget);
     const expensePercentage = (monthlyExpense / maxExpense) * 100;
     const targetPercentage = (monthlyTarget / maxExpense) * 100;
-  
+    
+   
     return (
       <div className="progress-container">
         <div className="bar">
@@ -32,6 +51,11 @@ const ProgressBar = ({ monthlyExpense, monthlyTarget }) => {
             <span className="legend-color expense "></span> Monthly Expense
           </div>
         </div>
+        <div>
+          
+
+        </div>
+      
       </div>
     );
   };
@@ -91,6 +115,9 @@ function SubmitExpenses({refresh}) {
                     monthlyTarget={currentMonthlyExpense}
                     ></ProgressBar>
 
+            </div>
+            <div>
+              <LineChartComponent/>
             </div>
             
            
