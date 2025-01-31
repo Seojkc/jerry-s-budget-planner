@@ -4780,11 +4780,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\seoja\\source\\repos\\JerryBudget\\JerryBudget\\JerryBudget.csproj",
+      "projectUniqueName": "C:\\Users\\seoja\\source\\repos\\Server\\JerryBudget\\JerryBudget.csproj",
       "projectName": "JerryBudget",
-      "projectPath": "C:\\Users\\seoja\\source\\repos\\JerryBudget\\JerryBudget\\JerryBudget.csproj",
+      "projectPath": "C:\\Users\\seoja\\source\\repos\\Server\\JerryBudget\\JerryBudget.csproj",
       "packagesPath": "C:\\Users\\seoja\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\seoja\\source\\repos\\JerryBudget\\JerryBudget\\obj\\",
+      "outputPath": "C:\\Users\\seoja\\source\\repos\\Server\\JerryBudget\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\seoja\\AppData\\Roaming\\NuGet\\NuGet.Config",

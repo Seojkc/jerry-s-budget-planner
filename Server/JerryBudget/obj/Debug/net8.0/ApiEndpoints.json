@@ -1,6 +1,52 @@
 [
   {
-    "ContainingType": "ExpensesController",
+    "ContainingType": "JerryBudget.Controller.ExpenseDataResponseController",
+    "Method": "GetTargetExpenseAmount",
+    "RelativePath": "api/ExpenseDataResponse/GetTargetExpenseAmount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.OpenApi.Any.AnyType",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "JerryBudget.Controller.ExpenseDataResponseController",
+    "Method": "GetTargetExpenseData",
+    "RelativePath": "api/ExpenseDataResponse/GetTargetExpenseData/{range}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "range",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.OpenApi.Any.AnyType",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "JerryBudget.Controller.ExpensesController",
     "Method": "GetExpenses",
     "RelativePath": "api/Expenses",
     "HttpMethod": "GET",
@@ -20,7 +66,7 @@
     ]
   },
   {
-    "ContainingType": "ExpensesController",
+    "ContainingType": "JerryBudget.Controller.ExpensesController",
     "Method": "PostExpense",
     "RelativePath": "api/Expenses",
     "HttpMethod": "POST",
@@ -46,7 +92,7 @@
     ]
   },
   {
-    "ContainingType": "ExpensesController",
+    "ContainingType": "JerryBudget.Controller.ExpensesController",
     "Method": "GetExpense",
     "RelativePath": "api/Expenses/{id}",
     "HttpMethod": "GET",
@@ -72,7 +118,7 @@
     ]
   },
   {
-    "ContainingType": "ExpensesController",
+    "ContainingType": "JerryBudget.Controller.ExpensesController",
     "Method": "PutExpense",
     "RelativePath": "api/Expenses/{id}",
     "HttpMethod": "PUT",
@@ -93,7 +139,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ExpensesController",
+    "ContainingType": "JerryBudget.Controller.ExpensesController",
     "Method": "DeleteExpense",
     "RelativePath": "api/Expenses/{id}",
     "HttpMethod": "DELETE",
@@ -171,6 +217,26 @@
     "ReturnTypes": [
       {
         "Type": "JerryBudget.Models.ThreeDot",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "JerryBudget.Controller.ThreeDotController",
+    "Method": "GetcurrentMonthlyExpense",
+    "RelativePath": "api/ThreeDot/GetcurrentMonthlyExpense",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.OpenApi.Any.AnyType",
         "MediaTypes": [
           "text/plain",
           "application/json",

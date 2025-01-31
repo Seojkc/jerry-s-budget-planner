@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "209MTCm+6LI=",
+  "dgSpecHash": "Pzu7ccvdtpI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\seoja\\source\\repos\\JerryBudget\\JerryBudget\\JerryBudget.csproj",
+  "projectFilePath": "C:\\Users\\seoja\\source\\repos\\Server\\JerryBudget\\JerryBudget.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\seoja\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\seoja\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
