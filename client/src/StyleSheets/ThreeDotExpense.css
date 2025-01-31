@@ -16,7 +16,7 @@
     flex: 1;
 }
 .green-shadow{
-    background: linear-gradient(to top,rgba(0, 255, 42, 0.425),rgb(255, 255, 255));
+    background: linear-gradient(to top,rgba(0, 255, 42, 0.61),rgb(255, 254, 179));
 }
 .red-shadow{
     background: linear-gradient(to top,rgba(255, 0, 0, 0.425),rgb(255, 255, 255));
@@ -27,7 +27,7 @@
 
 .oneDot-container h2{
     font-family: 'Courier New', monospace;
-    color: rgb(145, 145, 145);
+    color: rgb(56, 56, 56);
     margin-top: 60px;
     margin-left: 30px;
     text-align: left;

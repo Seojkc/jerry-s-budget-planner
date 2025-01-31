@@ -83,8 +83,16 @@ function SubmitExpenses({refresh}) {
         })
     }
 
+    const getcurrentMonthlyExpense = ()=>{
+      axios.get('http://localhost:5000/api/ThreeDot/GetcurrentMonthlyExpense')
+      .then(response =>{
+          setCurrentMonthlyExpense(response.data)
+      })
+  }
+
     useEffect(()=>{
         getThreeDotDetails();
+        getcurrentMonthlyExpense();
     },[refresh]);
     
 
@@ -98,12 +106,12 @@ function SubmitExpenses({refresh}) {
                     <h1>${new Intl.NumberFormat('en-US').format(totIncome)}</h1>
                 </div>
 
-                <div className='oneDot-container red-shadow'>
+                <div className='oneDot-container green-shadow'>
                     <h2>Total Expense/Yr</h2>
                     <h1>${new Intl.NumberFormat('en-US').format(totExpense)}</h1>
                 </div>
 
-                <div className='oneDot-container yellow-shadow'>
+                <div className='oneDot-container green-shadow'>
                     <h2>Targeted Expense/Yr</h2>
                     <h1>${new Intl.NumberFormat('en-US').format(monthlyTarExpense*12)}</h1>
                 </div>

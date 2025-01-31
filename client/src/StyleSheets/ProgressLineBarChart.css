@@ -1,0 +1,45 @@
+.Expense-data-chart{
+    height: 500px;
+    max-height: 500px;
+    width: 80% !important;
+    
+}
+.Expense-data-chart-div{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.Expense-data-chart-button-div button
+{
+    padding: 10px;
+    border-radius: 100px;
+    margin-left: 40px;
+    border: 2px solid rgb(7, 250, 48);
+    color: rgb(0, 117, 0);
+    background-color: rgb(231, 253, 222);
+    font-size: 16px;
+
+
+}
+
+.Expense-data-chart-button-div button:hover{
+    border: 2px solid rgb(123, 247, 144);
+    color: rgb(0, 0, 0);
+    background-color: rgb(242, 255, 236);
+}
+
+.Expense-data-chart-button-div-active{
+    border: 2px solid rgb(0, 146, 24) !important;
+    color: rgb(255, 255, 255) !important;
+    background-color: rgb(0, 146, 24) !important;
+}
+
+
+.Expense-data-chart-button-div 
+{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    
+}
