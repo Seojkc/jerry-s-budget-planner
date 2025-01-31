@@ -16,9 +16,7 @@ const MyNavbar = () => {
           <Link to="/dashboard" className="nav-link">
             Dashboard
           </Link>          
-          <Link to="/income" className="nav-link">
-            Income
-          </Link>
+          
           <Link to="/report" className="nav-link">
             Report
           </Link>

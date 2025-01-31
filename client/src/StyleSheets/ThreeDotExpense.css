@@ -130,3 +130,7 @@
   .legend-color.target {
     background: #86eb8a; /* Matches target color */
   }
+
+  .progress-monthly-expense-container{
+    margin-top: 80px;
+  }

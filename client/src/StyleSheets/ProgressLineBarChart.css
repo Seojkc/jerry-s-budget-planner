@@ -1,15 +1,3 @@
-.Expense-data-chart{
-    height: 500px;
-    max-height: 500px;
-    width: 80% !important;
-    
-}
-.Expense-data-chart-div{
-    display: flex;
-    justify-content: center;
-    
-}
-
 .Expense-data-chart-button-div button
 {
     padding: 10px;
@@ -42,4 +30,10 @@
     justify-content: center;
     margin-top: 20px;
     
+}
+.expense-history{
+    color: rgba(0, 0, 0, 0.63);
+    text-align: left;
+    margin-top: 20px;
+    font-size: 28px;
 }

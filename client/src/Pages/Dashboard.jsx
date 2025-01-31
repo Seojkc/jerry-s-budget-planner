@@ -101,15 +101,20 @@ function Dashboard() {
         <div className={showPopup?'Container blur-background':'Container '} >
             <h1 className='welcome-tag'>Welcome to Dashboard,</h1>
             <ThreeDot refresh={refresh}></ThreeDot>
-            <ProgressMonthlyLineBar XAxisData={10} YAxisData={12}></ProgressMonthlyLineBar>
+            
             <div className='button-expense-container'>
                 <Button onClick={togglePopup} variant="contained" className='new-expense-button'>New Expense</Button>
                 
                 <Popup show={showPopup} handleClose={togglePopup}>
                 </Popup>
             </div>
+            <div className="ProgressMonthlyLineBarContainer">
+                <div  className="ProgressMonthlyLineBar">
+                    <ProgressMonthlyLineBar></ProgressMonthlyLineBar>
+                </div>
+            </div>
 
-
+            <h2 className='expense-history'>Expense History</h2>
             <TableContainer component={Paper} className="tableContainer table-body">
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>

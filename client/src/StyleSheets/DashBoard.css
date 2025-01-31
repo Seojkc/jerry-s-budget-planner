@@ -50,3 +50,14 @@
 .expense-date-table-row{
     width:200px
 }
+
+.ProgressMonthlyLineBarContainer
+{
+    display: flex;
+    justify-content: center ;
+}
+
+.ProgressMonthlyLineBar{
+    width: 80%;
+    
+}
