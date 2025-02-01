@@ -21,8 +21,10 @@ namespace JerryBudget.Controller
         {
             _context = context;
         }
-        //GetTargetExpenseAmount
 
+
+
+        //GetTargetExpenseAmount
         [HttpGet("GetTargetExpenseAmount")]
         public async Task<ActionResult<AnyType>> GetTargetExpenseAmount()
         {
@@ -63,9 +65,6 @@ namespace JerryBudget.Controller
             try
             {
 
-               // var response = new ExpenseDataResponse();
-
-                // Validate the range parameter
                 var validRanges = new[] { "3months", "6months", "1year", "5years", "all" };
                 if (!validRanges.Contains(range.ToLower()))
                 {
@@ -77,8 +76,6 @@ namespace JerryBudget.Controller
                     .FromSqlRaw("CALL GetTargetExpenseData(@Range)", new MySqlParameter("@Range", range))
                     .ToListAsync();
 
-
-                
                 var response = new ExpenseDataResponse
                 {
                     Labels = expenseData.Select(sd => sd.Label).ToList(),
@@ -86,6 +83,7 @@ namespace JerryBudget.Controller
                 };
 
                 return Ok(response);
+
             }
             catch (Exception ex)
             {
@@ -94,5 +92,40 @@ namespace JerryBudget.Controller
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("GetPercentageDistributionRange/{range}")]
+        public async Task<ActionResult<AnyType>> GetPercentageDistributionRange(string range)
+        {
+            try
+            {
+
+                var validRanges = new[] { "3months", "6months", "1year", "5years", "all" };
+                if (!validRanges.Contains(range.ToLower()))
+                {
+                    return BadRequest("Invalid range specified. Valid values are: 3months, 6months, 1year, 5years, all.");
+                }
+
+                // Call the stored procedure
+                var expenseData = await _context.Set<ExpenseData>()
+                    .FromSqlRaw("CALL GetPercentageDistributionRange(@Range)", new MySqlParameter("@Range", range))
+                    .ToListAsync();
+
+                var response = new ExpenseDataResponse
+                {
+                    Labels = expenseData.Select(sd => sd.Label).ToList(),
+                    Data = expenseData.Select(sd => sd.Price).ToList()
+                };
+
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.Error.WriteLine($"Error in GetTargetExpenseData: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
     }
 }

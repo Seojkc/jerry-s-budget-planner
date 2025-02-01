@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2025 at 04:34 PM
+-- Generation Time: Feb 01, 2025 at 05:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -25,6 +25,32 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetPercentageDistributionRange` (IN `time_range` VARCHAR(50))   BEGIN
+    DECLARE start_date DATE;
+
+    -- Determine the start date based on the range
+    IF time_range = '3months' THEN
+        SET start_date = DATE_SUB(CURDATE(), INTERVAL 3 MONTH);
+    ELSEIF time_range = '6months' THEN
+        SET start_date = DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+    ELSEIF time_range = '1year' THEN
+        SET start_date = DATE_SUB(CURDATE(), INTERVAL 1 YEAR);
+    ELSEIF time_range = '5years' THEN
+        SET start_date = DATE_SUB(CURDATE(), INTERVAL 5 YEAR);
+    ELSE
+        -- Default to all data if range is invalid
+        SET start_date = '1970-01-01'; -- Or any other default start date
+    END IF;
+
+    -- Query to get aggregated data by category
+    SELECT 
+        DISTINCT(Category) as Label, 
+        SUM(Amount) AS Price 
+    FROM expense 
+    WHERE ExpenseDate >= start_date
+    GROUP BY Category;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetTargetExpenseData` (IN `rangeParam` VARCHAR(50))   BEGIN
     IF rangeParam = '3months' THEN
         SELECT DATE_FORMAT(ExpenseDate, '%M') AS Label, SUM(Amount) AS Price
