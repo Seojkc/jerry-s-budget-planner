@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -94,6 +95,17 @@ namespace JerryBudget.Controller
 
            
             return threeDot.ToString();
+        }
+
+        [HttpGet("GetcurrentMonthlyExpense")]
+        public async Task<ActionResult<AnyType>> GetcurrentMonthlyExpense()
+        {
+            var query = $"SELECT 0 as id,0.0 as totIncome,0.0 as totExpense,0.0 as tarExpense,0.0 as monthlyTarExpense,IFNULL(SUM(Amount),0) as currentMonthlyExpense,0 as YrUserDetail FROM expense where MONTH(CURDATE()) = MONTH(ExpenseDate) and YEAR(CURDATE()) = YEAR(ExpenseDate) ";
+
+            var threeDot = await _context.BudgetDetails.FromSqlRaw(query).FirstOrDefaultAsync();
+
+
+            return Ok(threeDot.currentMonthlyExpense);
         }
 
 

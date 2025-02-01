@@ -18,6 +18,8 @@ public class AppDbContext : DbContext
 
         // Map the ThreeDot model to tblbudgetdetails explicitly
         modelBuilder.Entity<ThreeDot>().ToTable("tblbudgetdetails");
+
+        modelBuilder.Entity<ExpenseData>().HasNoKey().ToView(null);
     }
 
 }
