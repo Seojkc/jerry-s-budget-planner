@@ -20,6 +20,13 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<ThreeDot>().ToTable("tblbudgetdetails");
 
         modelBuilder.Entity<ExpenseData>().HasNoKey().ToView(null);
+
+        modelBuilder.Entity<ExpenseCategory>(eb =>
+        {
+            eb.HasNoKey(); // Mark as keyless since it's a query result
+        });
+
+
     }
 
 }

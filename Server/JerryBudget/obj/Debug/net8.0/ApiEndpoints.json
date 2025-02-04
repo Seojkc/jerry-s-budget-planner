@@ -1,6 +1,83 @@
 [
   {
     "ContainingType": "JerryBudget.Controller.ExpenseDataResponseController",
+    "Method": "GetCategoryBasedChart",
+    "RelativePath": "api/ExpenseDataResponse/GetCategoryBasedChart",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.OpenApi.Any.AnyType",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "JerryBudget.Controller.ExpenseDataResponseController",
+    "Method": "GetCategoryBasedChart",
+    "RelativePath": "api/ExpenseDataResponse/GetCategoryBasedChart/{range}/{category}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "range",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "category",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.OpenApi.Any.AnyType",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "JerryBudget.Controller.ExpenseDataResponseController",
+    "Method": "GetPercentageDistributionRange",
+    "RelativePath": "api/ExpenseDataResponse/GetPercentageDistributionRange/{range}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "range",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.OpenApi.Any.AnyType",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "JerryBudget.Controller.ExpenseDataResponseController",
     "Method": "GetTargetExpenseAmount",
     "RelativePath": "api/ExpenseDataResponse/GetTargetExpenseAmount",
     "HttpMethod": "GET",
@@ -46,7 +123,7 @@
     ]
   },
   {
-    "ContainingType": "JerryBudget.Controller.ExpensesController",
+    "ContainingType": "ExpensesController",
     "Method": "GetExpenses",
     "RelativePath": "api/Expenses",
     "HttpMethod": "GET",
@@ -66,7 +143,7 @@
     ]
   },
   {
-    "ContainingType": "JerryBudget.Controller.ExpensesController",
+    "ContainingType": "ExpensesController",
     "Method": "PostExpense",
     "RelativePath": "api/Expenses",
     "HttpMethod": "POST",
@@ -92,7 +169,7 @@
     ]
   },
   {
-    "ContainingType": "JerryBudget.Controller.ExpensesController",
+    "ContainingType": "ExpensesController",
     "Method": "GetExpense",
     "RelativePath": "api/Expenses/{id}",
     "HttpMethod": "GET",
@@ -118,7 +195,7 @@
     ]
   },
   {
-    "ContainingType": "JerryBudget.Controller.ExpensesController",
+    "ContainingType": "ExpensesController",
     "Method": "PutExpense",
     "RelativePath": "api/Expenses/{id}",
     "HttpMethod": "PUT",
@@ -139,7 +216,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "JerryBudget.Controller.ExpensesController",
+    "ContainingType": "ExpensesController",
     "Method": "DeleteExpense",
     "RelativePath": "api/Expenses/{id}",
     "HttpMethod": "DELETE",

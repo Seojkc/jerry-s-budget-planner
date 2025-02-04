@@ -71,7 +71,7 @@ const ExpenseDonutChart = ({ expenses }) => {
         }
       }
     },
-    cutout: '60%' // This makes it a donut instead of a pie
+    cutout: '50%' // This makes it a donut instead of a pie
   };
 
   return (
@@ -102,7 +102,7 @@ const App = () => {
 
     const [timeRange, setTimeRange] = useState('3months');
   
-  const [chartData, setChartData] = useState({ category: [], amount: [] });
+    const [chartData, setChartData] = useState({ category: [], amount: [] });
 
 
   const fetchChartData = () => {
