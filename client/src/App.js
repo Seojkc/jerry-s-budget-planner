@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MyNavbar from './MyNavBar';
 import Dashboard from './Pages/Dashboard';
-import Income from './Pages/Income';
+import Bills from './Pages/Bills';
 import Report from './Pages/Report';
 import Customise from './Pages/Customise';
 
@@ -26,7 +26,7 @@ function App() {
                 <Routes className="Routes-main-content">
                   <Route path="/" element={<Navigate to="/dashboard" />} />
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/income" element={<Income />} />
+                  <Route path="/Bills" element={<Bills />} />
                   <Route path="/report" element={<Report />} />
                   <Route path="/Customise" element={<Customise />} />
                 </Routes>

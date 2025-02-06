@@ -12,12 +12,18 @@ public class AppDbContext : DbContext
 
     public DbSet<ThreeDot> BudgetDetails { get; set; }
 
+    public DbSet<RecurringBill> RecurringBill { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // Map the ThreeDot model to tblbudgetdetails explicitly
         modelBuilder.Entity<ThreeDot>().ToTable("tblbudgetdetails");
+
+        modelBuilder.Entity<RecurringBill>().ToTable("tblRecurringBills");
+
+        modelBuilder.Entity<RecurringBill>().HasNoKey().ToView(null);
 
         modelBuilder.Entity<ExpenseData>().HasNoKey().ToView(null);
 

@@ -95,4 +95,32 @@
   .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.3);
   }
+
+
+.donut-center-style{
+  position: absolute;
+  top: 50%;
+  left: 41%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: rgb(11, 0, 59);
+  color: white;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 200px;
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  z-index: 1 !important;
   
+}
+
+
+.donut-chart{
+  z-index: 21 !important;
+}

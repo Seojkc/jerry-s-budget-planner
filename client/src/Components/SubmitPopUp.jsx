@@ -1,8 +1,7 @@
-import '../StyleSheets/NewExpense.css';
+import { useState } from 'react';
 import '../StyleSheets/SubmitPopup.css';
 
-
-function SubmitExpenses({show}) {
+function SubmitPopup({show}) {
 
     return (
         <div className={`future-popup ${show ? 'popup-show' : 'popup-hide'}`}>
@@ -16,4 +15,4 @@ function SubmitExpenses({show}) {
     );
 }
 
-export default SubmitExpenses;
+export default SubmitPopup;

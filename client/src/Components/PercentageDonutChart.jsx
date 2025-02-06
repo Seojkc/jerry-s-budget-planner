@@ -3,6 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import '../StyleSheets/ProgressLineBarChart.css'
 import axios from 'axios';
+import zIndex from '@mui/material/styles/zIndex';
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -48,7 +49,8 @@ const ExpenseDonutChart = ({ expenses }) => {
             '#FFC400', // Darker Gold
         ],
         borderWidth: 2,
-        hoverOffset: 4
+        hoverOffset: 4,
+        borderRadius: 20
       }
     ]
   };
@@ -56,6 +58,7 @@ const ExpenseDonutChart = ({ expenses }) => {
   // Chart options
   const options = {
     responsive: true,
+    
     maintainAspectRatio: false,
     plugins: {
       legend: {
@@ -71,26 +74,25 @@ const ExpenseDonutChart = ({ expenses }) => {
         }
       }
     },
-    cutout: '50%' // This makes it a donut instead of a pie
+    cutout: '75%', // This makes it a donut instead of a pie
+    
   };
 
   return (
-    <div style={{ position: 'relative', height: '400px', width: '100%' }}>
-      <Doughnut data={chartData} options={options} />
+    <div style={{ position: 'relative', height: '400px', width: '100%',zIndex:'5' }}>
+      <Doughnut className='donut-chart' data={chartData} options={options} />
       
-      {/* Optional: Center text showing total */}
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '40%',
-        transform: 'translate(-50%, -50%)',
-        textAlign: 'center'
-      }}>
-        <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-          Total
-        </div>
+      {
+      /* Optional: Center text showing total */
+      }
+      <div className='donut-center-style'>
         <div>
-          ${Object.values(categoryTotals).reduce((a, b) => a + b, 0).toFixed(2)}
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+            Total
+          </div>
+          <div>
+            ${Object.values(categoryTotals).reduce((a, b) => a + b, 0).toFixed(2)}
+          </div>
         </div>
       </div>
     </div>

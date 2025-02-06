@@ -1,0 +1,99 @@
+.future-popup {
+  position: fixed;
+  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 4rem;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.popup-show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  animation: hologramFloat 3s ease-in-out infinite;
+}
+
+.popup-hide {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.holographic-checkmark {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+}
+
+.checkmark-core {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #00ff88;
+  clip-path: polygon(28% 48%, 41% 61%, 72% 30%, 66% 24%, 41% 54%, 34% 47%);
+  animation: checkScale 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.energy-wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,255,136,0.4) 0%, transparent 70%);
+  animation: wavePulse 2s infinite;
+}
+
+.future-text {
+  color: #00ff88;
+  text-align: center;
+  font-size: 1.8rem;
+  text-shadow: 0 0 15px rgba(0,255,136,0.4);
+  margin: 0;
+  animation: textGlow 2s ease-in-out infinite;
+}
+
+.energy-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(0,255,136,0.1) 0%, transparent 60%);
+  animation: fullPulse 3s infinite;
+}
+
+@keyframes hologramFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-10px); }
+}
+
+@keyframes checkScale {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes wavePulse {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(2); }
+}
+
+@keyframes textGlow {
+  0%, 100% { text-shadow: 0 0 15px rgba(0,255,136,0.4); }
+  50% { text-shadow: 0 0 25px rgba(0,255,136,0.8); }
+}
+
+@keyframes fullPulse {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
