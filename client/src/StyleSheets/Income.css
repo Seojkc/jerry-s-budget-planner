@@ -98,7 +98,7 @@ h1{
 }
 
 /* Different colors for visualization */
-.item[data-number="1"] { background: #2d2d81; }
+.item[data-number="1"] { background: #ffffff; }
 .item[data-number="2"] { background: #ffffff9c; }
 .item[data-number="3"] { background: #ffffff9c; }
 .item[data-number="4"] { background: #ffffff9c; }
@@ -127,12 +127,6 @@ input[type="number"]
 {
     -moz-appearance: textfield;
 }
-
-
-
-
-
-
 
 
 .Expense-chart-div

@@ -316,7 +316,7 @@ function FuturisticForm(refresh) {
             setShowPopup(true);
             setTimeout(() => {
                 setShowPopup(false)
-                resetData();
+               resetData();
                 //handleClose();
             }, 2000);
             })

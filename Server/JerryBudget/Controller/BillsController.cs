@@ -20,24 +20,47 @@ namespace JerryBudget.Controller
         }
 
         [HttpGet()]
-        public async Task<ActionResult<RecurringBill>> GetBill()
+        public async Task<ActionResult<IEnumerable<RecurringBill>>> GetRecurringBills()
         {
             try
             {
-                var recurringBill = await _context.Set<RecurringBill>().FromSqlRaw($" SELECT bill_id, user_id, bill_name, amount  ,frequency, start_date, end_date, category, description, send_notification, notification_days_before, payment_method, vendor, reference_number, blnStatus, next_due_date FROM tblrecurringbills ORDER BY tblrecurringbills.bill_id ASC").ToListAsync();
+                var sqlQuery = @"
+                             SELECT 
+                                bill_id, 
+                                user_id, 
+                                IFNULL(bill_name, '') AS bill_name, 
+                                IFNULL(amount, 0.00) AS amount, 
+                                frequency, 
+                                start_date, 
+                                IFNULL(end_date, '1990-01-01') AS end_date, 
+                                IFNULL(category, 'Food') AS category, 
+                                IFNULL(description, '') AS description, 
+                                IFNULL(send_notification, 0) AS send_notification, 
+                                IFNULL(notification_days_before, 0) AS notification_days_before, 
+                                IFNULL(payment_method, '') AS payment_method, 
+                                IFNULL(vendor, '') AS vendor, 
+                                IFNULL(reference_number, '') AS reference_number, 
+                                IFNULL(blnStatus, 1) AS blnStatus, 
+                                next_due_date 
+                            FROM tblrecurringbills 
+                            WHERE blnStatus = 1 
+                            ORDER BY bill_id ASC;
+                    ";
 
-                if (recurringBill == null)
+                var recurringBills = await _context.Set<RecurringBill>()
+                    .FromSqlRaw(sqlQuery)
+                    .ToListAsync();
+
+                if (!recurringBills.Any())
                 {
-                    return NotFound();
+                    return NotFound("No recurring bills found");
                 }
-                return Ok(recurringBill);
-            }
 
+                return Ok(recurringBills);
+            }
             catch (Exception ex)
             {
-                // Log the exception
-                Console.Error.WriteLine($"Error in GetTargetExpenseData: {ex.Message}");
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -120,6 +143,28 @@ namespace JerryBudget.Controller
             catch (Exception ex)
             {
                 Console.Error.WriteLine($"Error in CreateBill: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBill(int id)
+        {
+            try
+            {
+                int rowsAffected = await _context.Database.ExecuteSqlRawAsync($"update tblrecurringbills set blnStatus=0 WHERE bill_id = {id}");
+
+                if (rowsAffected == 0)
+                {
+                    return NotFound(new { message = "Bill not found" });
+                }
+
+                return Ok(new { message = "Bill deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error in DeleteBill: {ex.Message}");
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

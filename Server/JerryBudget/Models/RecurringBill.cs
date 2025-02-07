@@ -14,7 +14,7 @@ namespace JerryBudget.Models
         public string category { get; set; }
         public string description { get; set; }
         public bool send_notification { get; set; }
-        [Range(0, 30)] public int? notification_days_before { get; set; }
+         public int? notification_days_before { get; set; }
         public string payment_method { get; set; }
         public string vendor { get; set; }
         public string reference_number { get; set; }

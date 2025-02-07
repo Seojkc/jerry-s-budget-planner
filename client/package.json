@@ -23,7 +23,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.7",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.1.0",
+    "framer-motion": "^12.4.0",
     "powerbi-client": "^2.23.1",
     "powerbi-client-react": "^1.4.0",
     "react": "^18.3.1",
