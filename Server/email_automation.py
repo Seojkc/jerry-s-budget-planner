@@ -17,14 +17,26 @@ emails = cursor.fetchall()
 
 # Email credentials (use app passwords for Gmail)
 EMAIL_USER = "webmailJerryApp@gmail.com"
-EMAIL_PASS = "JerryApp123"
+EMAIL_PASS = "pvzl yjuc wgai oieo"
 
 # Send emails
 for email in emails:
-  msg = MIMEText(email[3])
+  
+  htmlConversion = f"""\
+    <html>
+      <body>
+        {email[3]}  
+      </body>
+    </html>
+    """
+      
+  msg = MIMEText(htmlConversion, 'html')
+  
   msg['Subject'] = email[2]
   msg['From'] = EMAIL_USER
   msg['To'] = email[1]
+    
+
 
   try:
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
@@ -32,7 +44,7 @@ for email in emails:
       server.sendmail(EMAIL_USER, [email[1]], msg.as_string())
     
     # Mark email as sent
-    cursor.execute("UPDATE email_queue SET sent_flag = 1 WHERE id = %s", (email[0],))
+    #cursor.execute("UPDATE email_queue SET sent_flag = 1 WHERE id = %s", (email[0],))
     db.commit()
   except Exception as e:
     print(f"Failed to send email: {e}")
