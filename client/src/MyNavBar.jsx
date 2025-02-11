@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar, Nav, Flex } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './StyleSheets/MyNavBar.css';
@@ -9,25 +9,31 @@ import MissMinuteRight from './ExternalFiles/Miss_Minutes_29.png'
 
 const MyNavbar = () => {
 
+  const [currentActive,setCurrentActive]=useState("Dashboard")
+
+  const clicked=(e)=>{
+    const name = e.currentTarget.dataset.name;
+    setCurrentActive(name);
+    console.log("clicked",name)
+  }
+
   return (
     <Navbar bg="dark" variant="dark" className="flex-column container">
       <Nav className="flexRow">
         <div className="flexRowChild">
-          <Link to="/dashboard" className="nav-link">
-            Dashboard
-          </Link>          
-          
-          <Link to="/report" className="nav-link">
-            Report
-          </Link>
-          <Link to="/Bills" className="nav-link">
-            Bills
-          </Link>
-          <Link to="/Customise" className="nav-link">
-            Customise
-          </Link>
+            {["Dashboard", "Report", "Bills", "Customise"].map((name) => (
+              <div
+                key={name}
+                onClick={clicked}
+                data-name={name}
+                className={currentActive === name ? "active-this" : ""}
+              >
+                <Link to={`/${name.toLowerCase()}`} className="nav-link">
+                  {name}
+                </Link>
+              </div>
+            ))}
         </div>
-        
         <div >
           <img src={MissMinuteRight} className='miss-minute-right'/>
         </div>

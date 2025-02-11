@@ -88,7 +88,7 @@
     width: 100%;
     margin-top: 150px;
     height: 120px;
-    background:linear-gradient(to top, rgba(0, 0, 0, 0.397) ,rgba(0, 0, 0, 0));
+    background:linear-gradient(to top, rgba(209, 209, 209, 0.397) ,rgba(255, 255, 255, 0));
     z-index: 101;
 }
 
@@ -136,6 +136,15 @@
     top: 130px;
     left: 30px;
     font-weight: 1;
+}
+
+.due-date-send_notification{
+    color: rgba(255, 255, 255, 0.678);
+    position:absolute;
+    top: 180px;
+    left: 30px;
+    font-size: 20px !important;
+    font-family: "Times New Roman", Times, serif;
 }
 
 .due-date-bill{

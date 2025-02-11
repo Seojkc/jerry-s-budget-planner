@@ -126,6 +126,7 @@ const BillList = () => {
                                         
                                         <p className='due-date-title-bill'>Next Due Date</p>
                                         <h1 className='due-date-bill'>{formatDate(new Date(bill.next_due_date).toLocaleDateString())}</h1>
+                                        <p className='due-date-send_notification'>{bill.send_notification?'Notification Enable':'Notification Disable'}</p>
 
                                         <p className='description-bill'>{bill.description}</p>
 

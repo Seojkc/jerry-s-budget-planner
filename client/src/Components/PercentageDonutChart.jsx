@@ -87,7 +87,7 @@ const ExpenseDonutChart = ({ expenses }) => {
       }
       <div className='donut-center-style'>
         <div>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+          <div className='color-blue-glow' style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
             Total
           </div>
           <div>

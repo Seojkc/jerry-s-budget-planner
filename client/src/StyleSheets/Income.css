@@ -105,7 +105,9 @@ h1{
 .item[data-number="5"] { background: #ffffff9c; }
 
 
-
+.color-blue-glow{
+    color: rgba(255, 255, 255, 0.664);
+}
 
 .start-date-input{
     width: 250px;
