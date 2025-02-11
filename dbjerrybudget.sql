@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2025 at 08:11 AM
+-- Generation Time: Feb 11, 2025 at 11:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -132,10 +132,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `ProcessRecurringBills` ()   BEGIN
     START TRANSACTION;
 
     -- Insert all due recurring bills into the `expense` table
-    INSERT INTO expense (Amount, Category, Description, ExpenseDate)
-    SELECT amount, category, description, next_due_date 
-    FROM tblrecurringbills 
-    WHERE next_due_date = CURDATE();
+    INSERT INTO expense (Amount, Category, Description, ExpenseDate,BudgetId)
+    SELECT amount, category, description, next_due_date,bill_id
+    FROM tblrecurringbills r
+    WHERE next_due_date = CURDATE()
+	AND NOT EXISTS( select 1 from expense e 		where e.BudgetId=r.bill_id);
 
     -- Insert all corresponding email notifications into the `email_queue` table
     INSERT INTO email_queue (recipient, subject, body)
@@ -192,9 +193,9 @@ INSERT INTO `email_queue` (`id`, `recipient`, `subject`, `body`, `sent_flag`, `c
 
 CREATE TABLE `expense` (
   `ExpenseID` int(11) NOT NULL,
-  `UserID` int(11) DEFAULT NULL,
+  `UserID` int(11) DEFAULT 1,
   `Category` varchar(50) DEFAULT 'food',
-  `Description` varchar(255) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT ' ',
   `Amount` decimal(10,2) DEFAULT 0.00,
   `ExpenseDate` datetime DEFAULT current_timestamp(),
   `BudgetID` int(11) DEFAULT NULL
@@ -251,12 +252,7 @@ INSERT INTO `expense` (`ExpenseID`, `UserID`, `Category`, `Description`, `Amount
 (46, 1, 'food', '', 9.00, '2025-02-03 05:00:00', 1),
 (47, 1, 'food', '', 10.00, '2025-02-06 06:00:00', 1),
 (53, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1),
-(54, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1),
-(55, NULL, 'Insurance', 'Private health insurance', 200.00, '2025-02-11 00:00:00', NULL),
-(56, 10, 'Insurance', 'Private health insurance', 200.00, '2025-02-11 00:00:00', NULL),
-(57, 10, 'Insurance', 'Private health insurance', 200.00, '2025-03-11 00:00:00', NULL),
-(58, NULL, 'Insurance', 'Private health insurance', 200.00, '2025-02-11 00:00:00', NULL),
-(59, 10, 'Insurance', 'Private health insurance', 200.00, '2025-02-11 00:00:00', NULL);
+(54, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1);
 
 --
 -- Triggers `expense`
@@ -309,7 +305,7 @@ CREATE TABLE `tblbudgetdetails` (
 --
 
 INSERT INTO `tblbudgetdetails` (`id`, `totIncome`, `totExpense`, `tarExpense`, `monthlyTarExpense`, `currentMonthlyExpense`, `YrUserDetail`) VALUES
-(1, 50000.00, 1123.00, 3600.00, 300.00, 0.00, '2025'),
+(1, 50000.00, 123.00, 3600.00, 300.00, 0.00, '2025'),
 (2, 0.00, 0.00, 0.00, 0.00, 0.00, '0000'),
 (3, 0.00, 0.00, 0.00, 0.00, 0.00, '2027');
 
