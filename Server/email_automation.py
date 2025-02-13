@@ -44,7 +44,7 @@ for email in emails:
       server.sendmail(EMAIL_USER, [email[1]], msg.as_string())
     
     # Mark email as sent
-    #cursor.execute("UPDATE email_queue SET sent_flag = 1 WHERE id = %s", (email[0],))
+    cursor.execute("UPDATE email_queue SET sent_flag = 1 WHERE id = %s", (email[0],))
     db.commit()
   except Exception as e:
     print(f"Failed to send email: {e}")

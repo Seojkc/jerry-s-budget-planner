@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2025 at 11:44 PM
+-- Generation Time: Feb 13, 2025 at 12:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -136,15 +136,23 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `ProcessRecurringBills` ()   BEGIN
     SELECT amount, category, description, next_due_date,bill_id
     FROM tblrecurringbills r
     WHERE next_due_date = CURDATE()
-	AND NOT EXISTS( select 1 from expense e 		where e.BudgetId=r.bill_id);
+	AND NOT EXISTS( select 1 from expense e 		
+                   where e.BudgetId=r.bill_id);
 
     -- Insert all corresponding email notifications into the `email_queue` table
     INSERT INTO email_queue (recipient, subject, body)
     SELECT 'seojmsstorage@gmail.com', 
            CONCAT('Payment Due: ', bill_name), 
-           'This is a sample report'
+           CONCAT(
+           '<p>This is a payment reminder for <span style="color: green;">', bill_name, '</span>.</p>',
+        '<p>Due Date for the payment is: <span style="color: green;">', next_due_date, '</span></p>',
+        '<p>Amount Due: <span style="color: red;">$', amount, '</span></p>',
+        '<br>',
+        '<p><i>This is an automated payment notification from Jerry App.</i></p>')
+         
     FROM tblrecurringbills
-    WHERE next_due_date = CURDATE();
+    WHERE DATE_SUB(next_due_date, INTERVAL notification_days_before DAY)=CURDATE();
+
 
     -- Update `next_due_date` based on the `frequency`
     UPDATE tblrecurringbills
@@ -183,7 +191,7 @@ CREATE TABLE `email_queue` (
 --
 
 INSERT INTO `email_queue` (`id`, `recipient`, `subject`, `body`, `sent_flag`, `created_at`, `user_id`) VALUES
-(1, 'seojmsstorage@gmail.com', 'Payment Due: Health Insurance', 'This is a sample report', 0, '2025-02-11 07:10:19', NULL);
+(2, 'seojmsstorage@gmail.com', 'Payment Due: Fido', '<p>This is a payment reminder for <span style=\"color: green;\">Fido</span>.</p><p>Due Date for the payment is: <span style=\"color: green;\">2025-02-17</span></p><p>Amount Due: <span style=\"color: red;\">$10.00</span></p><br><p><i>This is an automated payment notification from Jerry App.</i></p>', 0, '2025-02-12 23:39:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -252,7 +260,12 @@ INSERT INTO `expense` (`ExpenseID`, `UserID`, `Category`, `Description`, `Amount
 (46, 1, 'food', '', 9.00, '2025-02-03 05:00:00', 1),
 (47, 1, 'food', '', 10.00, '2025-02-06 06:00:00', 1),
 (53, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1),
-(54, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1);
+(54, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1),
+(60, 10, 'Insurance', 'Private health insurance', 200.00, '2025-03-11 00:00:00', NULL),
+(61, 6, 'Entertainment', 'Streaming service', 15.49, '2025-02-25 00:00:00', NULL),
+(62, 10, 'Insurance', 'Private health insurance', 200.00, '2025-03-12 00:00:00', NULL),
+(63, 1, 'Utilities', '', 10.00, '2025-03-17 00:00:00', NULL),
+(64, 1, 'Utilities', '', 10.00, '2025-02-17 00:00:00', NULL);
 
 --
 -- Triggers `expense`
@@ -305,7 +318,7 @@ CREATE TABLE `tblbudgetdetails` (
 --
 
 INSERT INTO `tblbudgetdetails` (`id`, `totIncome`, `totExpense`, `tarExpense`, `monthlyTarExpense`, `currentMonthlyExpense`, `YrUserDetail`) VALUES
-(1, 50000.00, 123.00, 3600.00, 300.00, 0.00, '2025'),
+(1, 50000.00, 558.49, 3600.00, 300.00, 0.00, '2025'),
 (2, 0.00, 0.00, 0.00, 0.00, 0.00, '0000'),
 (3, 0.00, 0.00, 0.00, 0.00, 0.00, '2027');
 
@@ -338,7 +351,7 @@ CREATE TABLE `tblrecurringbills` (
   `category` varchar(255) DEFAULT 'Food',
   `description` text DEFAULT '',
   `send_notification` tinyint(1) DEFAULT 0,
-  `notification_days_before` tinyint(4) DEFAULT NULL,
+  `notification_days_before` tinyint(4) DEFAULT 0,
   `payment_method` varchar(50) DEFAULT NULL,
   `vendor` varchar(255) DEFAULT NULL,
   `reference_number` varchar(100) DEFAULT NULL,
@@ -357,11 +370,12 @@ INSERT INTO `tblrecurringbills` (`bill_id`, `user_id`, `bill_name`, `amount`, `f
 (20, 3, 'Internet', 75.99, 'Monthly', '2025-01-10', NULL, 'Utilities', 'Fiber optic internet', 1, 2, 'Credit Card', 'ISP Ltd.', 'NET-5678', 1, '2025-03-10', '2025-02-06 17:28:00'),
 (21, 4, 'Gym Membership', 50.00, 'Monthly', '2025-01-05', NULL, 'Health & Fitness', 'Gym access fee', 0, NULL, 'Debit Card', 'Fitness Club', 'GYM-7890', 0, '2025-03-07', '2025-02-06 17:28:00'),
 (22, 5, 'Spotify Subscription', 9.99, 'Monthly', '2025-01-20', NULL, 'Entertainment', 'Music streaming service', 1, 1, 'PayPal', 'Spotify', 'SUB-1122', 1, '2025-03-20', '2025-02-06 17:28:00'),
-(23, 6, 'Netflix Subscription', 15.49, 'Monthly', '2025-01-25', NULL, 'Entertainment', 'Streaming service', 1, 1, 'Credit Card', 'Netflix', 'SUB-3344', 1, '2025-02-25', '2025-02-06 17:28:00'),
+(23, 6, 'Netflix Subscription', 15.49, 'Monthly', '2025-01-25', NULL, 'Entertainment', 'Streaming service', 1, 1, 'Credit Card', 'Netflix', 'SUB-3344', 1, '2025-02-14', '2025-02-06 17:28:00'),
 (24, 7, 'Phone Bill', 60.00, 'Monthly', '2025-01-07', NULL, 'Utilities', 'Mobile phone plan', 1, 3, 'Bank Transfer', 'Telco Inc.', 'TEL-5566', 0, '2025-02-07', '2025-02-06 17:28:00'),
 (25, 8, 'Student Loan', 250.00, 'Bi-Weekly', '2025-01-12', NULL, 'Loans', 'Student loan repayment', 1, 7, 'Direct Debit', 'Gov Loan Services', 'LOAN-7788', 0, '2025-01-26', '2025-02-06 17:28:00'),
 (26, 9, 'Property Tax', 1800.00, 'Annual', '2025-01-01', '2030-01-01', 'Taxes', 'Annual property tax', 1, 30, 'Bank Transfer', 'City Office', 'TAX-9900', 0, '2026-01-01', '2025-02-06 17:28:00'),
-(27, 10, 'Health Insurance', 200.00, 'Monthly', '2025-01-15', NULL, 'Insurance', 'Private health insurance', 1, 5, 'Credit Card', 'HealthCare Inc.', 'HINS-1234', 1, '2025-03-11', '2025-02-06 17:28:00');
+(27, 10, 'Health Insurance', 200.00, 'Monthly', '2025-01-15', NULL, 'Insurance', 'Private health insurance', 1, 5, 'Credit Card', 'HealthCare Inc.', 'HINS-1234', 1, '2025-02-13', '2025-02-06 17:28:00'),
+(28, 1, 'Fido', 10.00, 'Monthly', '2025-02-17', NULL, 'Utilities', '', 1, 5, NULL, 'Fido', NULL, 1, '2025-02-18', '2025-02-12 23:19:07');
 
 --
 -- Triggers `tblrecurringbills`
@@ -414,13 +428,13 @@ ALTER TABLE `tblrecurringbills`
 -- AUTO_INCREMENT for table `email_queue`
 --
 ALTER TABLE `email_queue`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `ExpenseID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `ExpenseID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `tblbudgetdetails`
@@ -432,7 +446,7 @@ ALTER TABLE `tblbudgetdetails`
 -- AUTO_INCREMENT for table `tblrecurringbills`
 --
 ALTER TABLE `tblrecurringbills`
-  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 DELIMITER $$
 --

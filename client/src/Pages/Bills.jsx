@@ -3,6 +3,7 @@ import '../StyleSheets/Income.css';
 import CreateNewBill from '../Components/CreateNewBill';
 import CurrentRecurringBills from '../Components/CurrentRecurringBills';
 import UpcomingBills from '../Components/UpcomingBills';
+import CreateNotification from '../Components/CreateNotificationBill';
 
 
 
@@ -25,8 +26,8 @@ function Income() {
               <div class="item CreateNewBill" data-number="3">
                 <CreateNewBill refresh={refresh}/>
               </div>
-              <div class="item" data-number="4">
-                <h2 className='sub-heading'>Create Notification</h2>
+              <div class="item CreateNewBill" data-number="4">
+                <CreateNotification/>
               </div>
               <div class="item bill-history-container" data-number="5">
                 <h2 className='sub-heading'>Bill History</h2>
