@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import '../StyleSheets/CreateNotificationBill.css';
+import axios from 'axios';
 
 const FuturisticFormContainer = styled.div`
   background: linear-gradient(145deg, #0f0f1a, #2a2a40);
@@ -168,18 +169,59 @@ const EmailComposer = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  
+
+  const ComposeMail = (composeMailData) => {
+    return axios.post('http://localhost:5000/api/Bills/composeMail', composeMailData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  };
+
+  const convertToHTML = (text) => {
+    return text.replace(/\n/g, "<br>");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    const isValid = validateForm();
+    if(isValid){
 
-    // Submit logic here
-    console.log('Email data:', formData);
-    
-    setShowPopup(true);
-    setTimeout(() => {
-      setShowPopup(false);
-      resetData();
-    }, 2000);
+        const htmlBody = convertToHTML(formData.body);
+
+        const composeMailData={
+            id:1,
+            recipient:formData.recipient,
+            subject:formData.subject,
+            body:htmlBody,
+            sent_flag:0,
+            created_at: formData.scheduleDate,
+            user_id:1
+        }
+
+        ComposeMail(composeMailData)
+            .then(response => {
+                // Handle success
+                console.log('Mail Copmposed', response.data);
+                // Show success notification
+                setShowPopup(true);
+                setTimeout(() => {
+                    setShowPopup(false)
+                    resetData();
+                    //handleClose();
+                }, 2000);
+                })
+                .catch(error => {
+                // Handle error
+                console.error('Error creating bill:', error);
+                // Add error state handling if needed
+                });
+
+    }
+    else{
+        return;
+    }
   };
 
   const resetData = () => {

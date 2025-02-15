@@ -12,7 +12,7 @@ db = mysql.connector.connect(
 
 # Fetch unsent emails
 cursor = db.cursor()
-cursor.execute("SELECT id, recipient, subject, body FROM email_queue WHERE sent_flag = 0")
+cursor.execute("SELECT id, recipient, subject, body FROM email_queue WHERE sent_flag = 0 AND send_at <= CURDATE()")
 emails = cursor.fetchall()
 
 # Email credentials (use app passwords for Gmail)

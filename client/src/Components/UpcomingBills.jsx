@@ -27,6 +27,27 @@ const BillList = () => {
               });
         }
     }
+
+    
+
+    const skipPaymentFn= async(billId)=>
+      {
+          try
+          {
+              await axios.put(`http://localhost:5000/api/Bills/${billId}/skipPaymentFn`);
+  
+              toast.success(`Bill #${billId} marked as paid successfully!`, {
+                position: "top-right",
+                autoClose: 3000,
+              });            fetchBills();
+          }
+          catch(error){
+              toast.error(`Failed to mark bill #${billId} as paid.`, {
+                  position: "top-right",
+                  autoClose: 3000,
+                });
+          }
+      }
   
   // Fetch bills from API
   const fetchBills = async () => {
@@ -91,9 +112,15 @@ const BillList = () => {
                                                   </div>
                                               </div>
 
+                                              <button className='mark-as-paid-button skip-button' onClick={()=>skipPaymentFn(bill.bill_id)}>
+                                                  <h2>Skip Payment</h2>
+                                              </button>
+
                                               <button className='mark-as-paid-button' onClick={()=>markAsPaidFn(bill.bill_id)}>
                                                   <h2>Mark as Paid</h2>
                                               </button>
+
+                                              
                                       </motion.div>
                                   </div>
                                 </div>     

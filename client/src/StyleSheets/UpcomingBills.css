@@ -28,6 +28,11 @@
     margin-top: 10px;
   }
 
+  .skip-button{
+    top: 80px !important;
+    right: 30px;
+  }
+
   .mark-as-paid-button {
     position: absolute;
     top: 160px;

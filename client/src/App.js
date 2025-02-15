@@ -8,15 +8,20 @@ import Dashboard from './Pages/Dashboard';
 import Bills from './Pages/Bills';
 import Report from './Pages/Report';
 import Customise from './Pages/Customise';
+import LoginPage from './Pages/Login'
 
 // Create your theme
 const theme = createTheme();
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>  {/* ThemeProvider is wrapping the app */}
+    <ThemeProvider theme={theme}>  
+
+      
       <Router>
         <div className="App">
+          {/* <LoginPage className="App login-page"/> */}
+
           <Container fluid>
             <div className="Row-Container">
               <div className="nav-bar">

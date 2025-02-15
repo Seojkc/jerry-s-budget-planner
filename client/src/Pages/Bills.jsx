@@ -4,7 +4,7 @@ import CreateNewBill from '../Components/CreateNewBill';
 import CurrentRecurringBills from '../Components/CurrentRecurringBills';
 import UpcomingBills from '../Components/UpcomingBills';
 import CreateNotification from '../Components/CreateNotificationBill';
-
+import BillHistoryTable from '../Components/BillHistory';
 
 
 function Income() {
@@ -30,7 +30,7 @@ function Income() {
                 <CreateNotification/>
               </div>
               <div class="item bill-history-container" data-number="5">
-                <h2 className='sub-heading'>Bill History</h2>
+                <BillHistoryTable/>
               </div>
           </div>  
           
