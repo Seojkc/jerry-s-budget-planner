@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 13, 2025 at 12:52 AM
+-- Generation Time: Feb 17, 2025 at 11:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -127,6 +127,65 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GetTargetExpenseData` (IN `rangePar
     END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prcMarkASPaidtoExpenseTable` (IN `p_bill_id` INT)   BEGIN
+	DECLARE v_amount DECIMAL(10,2);
+    DECLARE v_category VARCHAR(255);
+    DECLARE v_description TEXT;
+    DECLARE v_next_due_date DATE;
+    DECLARE v_user_id INT;
+	DECLARE v_bill_name VARCHAR(255);
+	DECLARE v_payment_method VARCHAR(255);
+	DECLARE v_vendor VARCHAR(255);
+    DECLARE v_reference_number VARCHAR(255);
+
+     SELECT amount, category, description, next_due_date, user_id,bill_name, payment_method, vendor,reference_number
+     INTO v_amount, v_category, v_description, v_next_due_date, v_user_id,v_bill_name,v_payment_method,v_vendor,v_reference_number
+     FROM tblrecurringbills
+     WHERE bill_id = p_bill_id;
+
+
+	 INSERT INTO expense (Amount, Category, Description, ExpenseDate, UserID, BudgetID)
+   	 VALUES (v_amount, v_category, v_description, v_next_due_date, v_user_id, p_bill_id);
+
+	INSERT INTO bill_history (bill_id, user_id, bill_name, amount, category, description, payment_date, payment_method, vendor, reference_number) 
+    VALUES (p_bill_id,v_user_id,v_bill_name,v_amount,v_category,v_description,CURDATE(), v_payment_method,v_vendor, v_reference_number);
+
+    
+        UPDATE tblrecurringbills
+            SET next_due_date = CASE
+                WHEN frequency = 'Monthly' THEN DATE_ADD(CURDATE(), INTERVAL 1 MONTH)
+                WHEN frequency = 'Bi-Weekly' THEN DATE_ADD(CURDATE(), INTERVAL 14 DAY)
+                WHEN frequency = 'Annual' THEN DATE_ADD(CURDATE(), INTERVAL 1 YEAR)
+                ELSE next_due_date 
+            END
+            WHERE bill_id =  p_bill_id;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prcskipThePayment` (IN `p_bill_id` INT)   BEGIN
+	DECLARE v_amount DECIMAL(10,2);
+    DECLARE v_category VARCHAR(255);
+    DECLARE v_description TEXT;
+    DECLARE v_next_due_date DATE;
+    DECLARE v_user_id INT;
+
+     SELECT amount, category, description, next_due_date, user_id
+     INTO v_amount, v_category, v_description, v_next_due_date, v_user_id
+     FROM tblrecurringbills
+     WHERE bill_id = p_bill_id;
+
+    
+        UPDATE tblrecurringbills
+            SET next_due_date = CASE
+                WHEN frequency = 'Monthly' THEN DATE_ADD(CURDATE(), INTERVAL 1 MONTH)
+                WHEN frequency = 'Bi-Weekly' THEN DATE_ADD(CURDATE(), INTERVAL 14 DAY)
+                WHEN frequency = 'Annual' THEN DATE_ADD(CURDATE(), INTERVAL 1 YEAR)
+                ELSE next_due_date 
+            END
+            WHERE bill_id =  p_bill_id;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ProcessRecurringBills` ()   BEGIN
     -- Start Transaction
     START TRANSACTION;
@@ -138,6 +197,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `ProcessRecurringBills` ()   BEGIN
     WHERE next_due_date = CURDATE()
 	AND NOT EXISTS( select 1 from expense e 		
                    where e.BudgetId=r.bill_id);
+
+
+	INSERT INTO tblbill_history (bill_id, user_id, bill_name, amount, category, payment_date, vendor, reference_number)
+    select bill_id, user_id, bill_name, amount, category, CURDATE(), vendor, reference_number
+	FROM tblrecurringbills r
+	WHERE next_due_date = CURDATE()
+	AND NOT EXISTS( select 1 from expense e 		
+                   where e.BudgetId=r.bill_id);
+
 
     -- Insert all corresponding email notifications into the `email_queue` table
     INSERT INTO email_queue (recipient, subject, body)
@@ -179,19 +247,24 @@ DELIMITER ;
 CREATE TABLE `email_queue` (
   `id` int(11) NOT NULL,
   `recipient` varchar(255) NOT NULL,
-  `subject` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT 'Jerry Mail',
   `body` text NOT NULL,
+  `send_at` date DEFAULT current_timestamp(),
   `sent_flag` tinyint(4) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `user_id` int(11) DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `email_queue`
 --
 
-INSERT INTO `email_queue` (`id`, `recipient`, `subject`, `body`, `sent_flag`, `created_at`, `user_id`) VALUES
-(2, 'seojmsstorage@gmail.com', 'Payment Due: Fido', '<p>This is a payment reminder for <span style=\"color: green;\">Fido</span>.</p><p>Due Date for the payment is: <span style=\"color: green;\">2025-02-17</span></p><p>Amount Due: <span style=\"color: red;\">$10.00</span></p><br><p><i>This is an automated payment notification from Jerry App.</i></p>', 0, '2025-02-12 23:39:24', NULL);
+INSERT INTO `email_queue` (`id`, `recipient`, `subject`, `body`, `send_at`, `sent_flag`, `created_at`, `user_id`) VALUES
+(2, 'seojmsstorage@gmail.com', 'Payment Due: Fido', '<p>This is a payment reminder for <span style=\"color: green;\">Fido</span>.</p><p>Due Date for the payment is: <span style=\"color: green;\">2025-02-17</span></p><p>Amount Due: <span style=\"color: red;\">$10.00</span></p><br><p><i>This is an automated payment notification from Jerry App.</i></p>', '2025-02-12', 1, '2025-02-12 23:39:24', NULL),
+(3, 'seojmsstorage@gmail.com', 'Sample Mail', 'this is sample mail', '2025-02-13', 1, '2025-02-13 03:54:18', 1),
+(4, 'seojmsstorage@gmail.com', 'sampe mail', 'this is a <br>smaple <br>mail', '2025-02-15', 0, '2025-02-13 03:58:44', 1),
+(11, 'seojmsstorage@gmail.com', 'Payment Due: Netflix Subscription', '<p>This is a payment reminder for <span style=\"color: green;\">Netflix Subscription</span>.</p><p>Due Date for the payment is: <span style=\"color: green;\">2025-02-14</span></p><p>Amount Due: <span style=\"color: red;\">$15.49</span></p><br><p><i>This is an automated payment notification from Jerry App.</i></p>', '2025-02-13', 1, '2025-02-13 17:10:44', 1),
+(12, 'seojameskc007@gmail.com', 'Payment Due: Fido', '<p>This is a payment reminder for <span style=\"color: green;\">Fido</span>.</p><p>Due Date for the payment is: <span style=\"color: green;\">2025-02-18</span></p><p>Amount Due: <span style=\"color: red;\">$10.00</span></p><br><p><i>This is an automated payment notification from Jerry App.</i></p>', '2025-02-13', 1, '2025-02-13 17:10:44', 1);
 
 -- --------------------------------------------------------
 
@@ -261,11 +334,8 @@ INSERT INTO `expense` (`ExpenseID`, `UserID`, `Category`, `Description`, `Amount
 (47, 1, 'food', '', 10.00, '2025-02-06 06:00:00', 1),
 (53, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1),
 (54, 1, 'food', '', 15.00, '2025-02-10 05:00:00', 1),
-(60, 10, 'Insurance', 'Private health insurance', 200.00, '2025-03-11 00:00:00', NULL),
-(61, 6, 'Entertainment', 'Streaming service', 15.49, '2025-02-25 00:00:00', NULL),
-(62, 10, 'Insurance', 'Private health insurance', 200.00, '2025-03-12 00:00:00', NULL),
-(63, 1, 'Utilities', '', 10.00, '2025-03-17 00:00:00', NULL),
-(64, 1, 'Utilities', '', 10.00, '2025-02-17 00:00:00', NULL);
+(69, 1, 'Insurance', 'Private health insurance', 200.00, '2025-02-13 00:00:00', 27),
+(73, 1, 'Entertainment', 'Streaming service', 15.49, '2025-02-14 00:00:00', 23);
 
 --
 -- Triggers `expense`
@@ -300,6 +370,61 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `secure_data`
+--
+
+CREATE TABLE `secure_data` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `secure_data`
+--
+
+INSERT INTO `secure_data` (`id`, `name`, `email`, `status`) VALUES
+(1, 'Seo James', 'seojames@gmail.com', 'Active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblbill_history`
+--
+
+CREATE TABLE `tblbill_history` (
+  `history_id` int(11) NOT NULL,
+  `bill_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT 1,
+  `bill_name` varchar(255) DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `category` varchar(255) DEFAULT 'Food',
+  `payment_date` date NOT NULL,
+  `vendor` varchar(255) DEFAULT NULL,
+  `reference_number` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblbill_history`
+--
+
+INSERT INTO `tblbill_history` (`history_id`, `bill_id`, `user_id`, `bill_name`, `amount`, `category`, `payment_date`, `vendor`, `reference_number`, `created_at`) VALUES
+(1, 1, 101, 'Electricity Bill', 150.75, 'Utilities', '2025-02-01', 'Power Company', 'REF123456', '2025-02-13 18:44:39'),
+(2, 2, 102, 'Water Bill', 80.50, 'Utilities', '2025-02-02', 'Water Supplier', 'REF789012', '2025-02-13 18:44:39'),
+(3, 3, 103, 'Internet Bill', 60.00, 'Internet', '2025-02-03', 'ISP Provider', 'REF345678', '2025-02-13 18:44:39'),
+(4, 4, 104, 'Car Insurance', 200.00, 'Insurance', '2025-02-04', 'ABC Insurance', 'REF901234', '2025-02-13 18:44:39'),
+(5, 5, 105, 'Rent Payment', 1200.00, 'Housing', '2025-02-05', 'Landlord', 'REF567890', '2025-02-13 18:44:39'),
+(6, 6, 106, 'Gym Membership', 45.00, 'Health', '2025-02-06', 'Fitness Center', 'REF112233', '2025-02-13 18:44:39'),
+(7, 7, 107, 'Netflix Subscription', 15.99, 'Entertainment', '2025-02-07', 'Netflix', 'REF445566', '2025-02-13 18:44:39'),
+(8, 8, 108, 'Phone Bill', 55.25, 'Utilities', '2025-02-08', 'Mobile Provider', 'REF778899', '2025-02-13 18:44:39'),
+(9, 9, 109, 'Groceries', 250.00, 'Food', '2025-02-09', 'Supermarket', 'REF990011', '2025-02-13 18:44:39'),
+(10, 10, 110, 'Credit Card Payment', 500.00, 'Finance', '2025-02-10', 'Bank', 'REF223344', '2025-02-13 18:44:39');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tblbudgetdetails`
 --
 
@@ -318,7 +443,7 @@ CREATE TABLE `tblbudgetdetails` (
 --
 
 INSERT INTO `tblbudgetdetails` (`id`, `totIncome`, `totExpense`, `tarExpense`, `monthlyTarExpense`, `currentMonthlyExpense`, `YrUserDetail`) VALUES
-(1, 50000.00, 558.49, 3600.00, 300.00, 0.00, '2025'),
+(1, 50000.00, 338.49, 18000.00, 1500.00, 0.00, '2025'),
 (2, 0.00, 0.00, 0.00, 0.00, 0.00, '0000'),
 (3, 0.00, 0.00, 0.00, 0.00, 0.00, '2027');
 
@@ -370,27 +495,31 @@ INSERT INTO `tblrecurringbills` (`bill_id`, `user_id`, `bill_name`, `amount`, `f
 (20, 3, 'Internet', 75.99, 'Monthly', '2025-01-10', NULL, 'Utilities', 'Fiber optic internet', 1, 2, 'Credit Card', 'ISP Ltd.', 'NET-5678', 1, '2025-03-10', '2025-02-06 17:28:00'),
 (21, 4, 'Gym Membership', 50.00, 'Monthly', '2025-01-05', NULL, 'Health & Fitness', 'Gym access fee', 0, NULL, 'Debit Card', 'Fitness Club', 'GYM-7890', 0, '2025-03-07', '2025-02-06 17:28:00'),
 (22, 5, 'Spotify Subscription', 9.99, 'Monthly', '2025-01-20', NULL, 'Entertainment', 'Music streaming service', 1, 1, 'PayPal', 'Spotify', 'SUB-1122', 1, '2025-03-20', '2025-02-06 17:28:00'),
-(23, 6, 'Netflix Subscription', 15.49, 'Monthly', '2025-01-25', NULL, 'Entertainment', 'Streaming service', 1, 1, 'Credit Card', 'Netflix', 'SUB-3344', 1, '2025-02-14', '2025-02-06 17:28:00'),
+(23, 6, 'Netflix Subscription', 15.49, 'Monthly', '2025-01-25', NULL, 'Entertainment', 'Streaming service', 1, 1, 'Credit Card', 'Netflix', 'SUB-3344', 1, '2025-03-14', '2025-02-06 17:28:00'),
 (24, 7, 'Phone Bill', 60.00, 'Monthly', '2025-01-07', NULL, 'Utilities', 'Mobile phone plan', 1, 3, 'Bank Transfer', 'Telco Inc.', 'TEL-5566', 0, '2025-02-07', '2025-02-06 17:28:00'),
 (25, 8, 'Student Loan', 250.00, 'Bi-Weekly', '2025-01-12', NULL, 'Loans', 'Student loan repayment', 1, 7, 'Direct Debit', 'Gov Loan Services', 'LOAN-7788', 0, '2025-01-26', '2025-02-06 17:28:00'),
 (26, 9, 'Property Tax', 1800.00, 'Annual', '2025-01-01', '2030-01-01', 'Taxes', 'Annual property tax', 1, 30, 'Bank Transfer', 'City Office', 'TAX-9900', 0, '2026-01-01', '2025-02-06 17:28:00'),
-(27, 10, 'Health Insurance', 200.00, 'Monthly', '2025-01-15', NULL, 'Insurance', 'Private health insurance', 1, 5, 'Credit Card', 'HealthCare Inc.', 'HINS-1234', 1, '2025-02-13', '2025-02-06 17:28:00'),
+(27, 10, 'Health Insurance', 200.00, 'Monthly', '2025-01-15', NULL, 'Insurance', 'Private health insurance', 1, 5, 'Credit Card', 'HealthCare Inc.', 'HINS-1234', 1, '2025-03-13', '2025-02-06 17:28:00'),
 (28, 1, 'Fido', 10.00, 'Monthly', '2025-02-17', NULL, 'Utilities', '', 1, 5, NULL, 'Fido', NULL, 1, '2025-02-18', '2025-02-12 23:19:07');
 
---
--- Triggers `tblrecurringbills`
---
-DELIMITER $$
-CREATE TRIGGER `markASPaidtoExpenseTable` AFTER UPDATE ON `tblrecurringbills` FOR EACH ROW BEGIN
+-- --------------------------------------------------------
 
-	IF NEW.blnStatus = 1 THEN
-		INSERT INTO expense(Amount,Category,Description,ExpenseDate,UserID)
-		VALUES(OLD.amount,NEW.category,NEW.description,OLD.next_due_date,NEW.user_id);
-	END IF;
+--
+-- Table structure for table `users`
+--
 
-END
-$$
-DELIMITER ;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`) VALUES
+(1, 'admin', 'securepassword');
 
 --
 -- Indexes for dumped tables
@@ -409,6 +538,18 @@ ALTER TABLE `expense`
   ADD PRIMARY KEY (`ExpenseID`);
 
 --
+-- Indexes for table `secure_data`
+--
+ALTER TABLE `secure_data`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblbill_history`
+--
+ALTER TABLE `tblbill_history`
+  ADD PRIMARY KEY (`history_id`);
+
+--
 -- Indexes for table `tblbudgetdetails`
 --
 ALTER TABLE `tblbudgetdetails`
@@ -421,6 +562,13 @@ ALTER TABLE `tblrecurringbills`
   ADD PRIMARY KEY (`bill_id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -428,13 +576,25 @@ ALTER TABLE `tblrecurringbills`
 -- AUTO_INCREMENT for table `email_queue`
 --
 ALTER TABLE `email_queue`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `ExpenseID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `ExpenseID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+
+--
+-- AUTO_INCREMENT for table `secure_data`
+--
+ALTER TABLE `secure_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblbill_history`
+--
+ALTER TABLE `tblbill_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tblbudgetdetails`
@@ -448,11 +608,17 @@ ALTER TABLE `tblbudgetdetails`
 ALTER TABLE `tblrecurringbills`
   MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 DELIMITER $$
 --
 -- Events
 --
-CREATE DEFINER=`root`@`localhost` EVENT `DailyRecurringBillCheck` ON SCHEDULE EVERY 1 DAY STARTS '2025-02-08 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL ProcessRecurringBills()$$
+CREATE DEFINER=`root`@`localhost` EVENT `DailyRecurringBillCheck` ON SCHEDULE EVERY 1 DAY STARTS '2025-02-14 01:15:57' ON COMPLETION NOT PRESERVE ENABLE DO CALL ProcessRecurringBills()$$
 
 DELIMITER ;
 COMMIT;

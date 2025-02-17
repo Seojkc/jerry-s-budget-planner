@@ -14,6 +14,9 @@ public class AppDbContext : DbContext
 
     public DbSet<RecurringBill> RecurringBill { get; set; }
 
+    public DbSet<BillHistory> BillHistory { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
