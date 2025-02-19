@@ -1,9 +1,9 @@
-****Jerry's Budget Planner App****
+## Jerry's Budget Planner App
 
-*Overview*
+### Overview
 Jerry's Budget Planner is a full-stack web application designed to help users track income, expenses, and recurring bills. It provides insightful reports, customizable financial targets, and automated email notifications for bill reminders.
 
-*Tech Stack*
+### Tech Stack
 - Frontend: React with multiple UI and utility libraries
 - Backend: ASP.NET Core (REST API with 4 controllers and 7 models)
 - Database: MySQL (with events, procedures, and triggers, 7 tables)
